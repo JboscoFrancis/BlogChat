@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+{% load static%}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row py-2">
+    <div class="col-md-8">
+        <div class="content-section">
+            <div class="mb-4">
+                {% if request.user.is_authenticated %}
+                <form action="" method="POST" class="p-2">
+                    {% csrf_token %}
+                    <legend>Create new post</legend>
+                    {{form|crispy}}
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm ml-5">Add Post</button>
+                    </div>
+                </form>
+                {% else %}
+                <h3 class="alert alert-danger text-center">Please sign in first<i></i></h3>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            {% for message in messages %}
+            <p class="alert alert-danger" style="width: 400px;">{{message}}</p>
+            {% endfor %}
+        </div>
+        <p><a class="text-muted" href="{% url 'home' %}">Go Back</a></p>
+    </div>
+    <div class="col-md-4">
+        <div>
+        </div>
+    </div>
+</div>
+{% endblock %}

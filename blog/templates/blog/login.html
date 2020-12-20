@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="row py-2">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <form action="" method="POST" class="text-center p-4 border border-light">
+                {% csrf_token %}
+                <Legend>Sign In Here</Legend>
+                <div class="form-group">
+                    <input class="form-control mb-4" type="text" placeholder="username" name="username">
+
+                    <input class="form-control mb-4" type="password" placeholder="password" name="password">
+                </div>
+                <div class="mb-4">
+                    {% for message in messages %}
+                    <p class="alert alert-danger text-left text-sm ">{{message}}</p>
+                    {% endfor %}
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-sm mb-2">Login</button> <small class="ml-4"><a href=""> forget password?</a></small>
+                </div>
+                <div class="py-4">
+                    <p>Dont't have account? <a href="{% url 'register' %}">Register</a> </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>
+{% endblock %}

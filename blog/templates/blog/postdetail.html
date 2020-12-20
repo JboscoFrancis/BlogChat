@@ -1,0 +1,79 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row py-2">
+    <div class="col-md-8">
+        <div class="content-section">
+            <div>
+                {% for message in messages %}
+                <p class="alert alert-success">{{message}}</p>
+                {% endfor %}
+            </div>
+            <div class="card" id="card1">
+                <h4 class="ml-4" id="post_detail"><img class="rounded-circle article-img" width="60" src="{{post.post_user.profile.profile.url}}" alt="img"><b> {{post.title}}</b></h4>
+            </div>
+            <p class="p-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{post.post}}</p>
+
+            <!-- if user is the one who created a post then he/she can be able to either update or delete post -->
+            {% if request.user == post.post_user %}
+            <div class="mb-2">
+                <br>
+                <button class="btn btn-outline-primary ml-4 btn-sm"><a href="{% url 'update' post.id %}">Edit Post</a></button>
+                <button class="btn btn-outline-danger ml-4 btn-sm"><a href="{% url 'delete_post' post.id  %}">delete Post</a></button>
+            </div>
+            {% endif %}
+            <div class="comment">
+                <h4 class="text-center">Comments <button class="btn btn-success btn-sm" disabled> {{total_reply}}</button></h4>
+                {% for reply in reply %}
+                <p class="ml-2"><b>{{reply.reply_user}}</b></p>
+                <p class="ml-4">{{reply.reply_comment}}</p>
+
+                <!-- if user is a staff then can be able to delete any reply_comment -->
+                {% if request.user.is_staff %}
+                <form action="{% url 'delete_reply' reply.id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-danger btn-sm">delete</button>
+                </form>
+                {% endif %}
+                <hr>
+                {% endfor %}
+
+
+                    <!-- paginator starts here -->
+                    <div class="pagination">
+                        <h5 class="step-links">
+                            {% if reply.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ reply.previous_page_number }}">previous </a>
+                            {% endif %}
+                    
+                            <h5 class="current">
+                                Page {{ reply.number }} of {{ reply.paginator.num_pages }}.
+                            </h5>
+                    
+                            {% if reply.has_next %}
+                                <a href="?page={{ reply.next_page_number }}"> next</a>
+                                <a href="?page={{ reply.paginator.num_pages }}"> last &raquo;</a>
+                            {% endif %}
+                        </h5>
+                    </div>
+
+
+                <div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <legend>Add comment</legend>
+                        {{form|crispy}}
+                        <button class="btn btn-primary btn-sm">add comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <p class="py-2"><a class="text-muted" href="{% url 'home' %}"><b>Go Back</b></a></p>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>
+{% endblock %}

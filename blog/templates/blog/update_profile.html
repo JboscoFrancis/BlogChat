@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row py-2">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="rounded-circle" width=200 src="{{request.user.profile.profile.url}}" alt="">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h4 class="mr-4 mb-2">Edit your information</h4><hr>
+                <div>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <hr>
+                        <small>Select New profile</small><br>
+                        {{p_form}}
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+{% endblock %}

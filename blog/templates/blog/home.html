@@ -1,0 +1,77 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row py-2">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="">Current Post Update</h3>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-info btn-sm"><a href="{% url 'create' %}">Creat new Post</a></button>
+            </div>
+        </div>
+            <hr>
+                <div class="mb-4">
+                    <form action="" method="GET">
+                        <div class="pr-5">
+                           <div class="pr-5">
+                            {{postFilter.form}} 
+                            <button class="btn btn-primary btn-sm">Search</button>
+                           </div>
+                        </div>
+                    </form>
+                </div>
+            <!-- display news post here -->
+            <div class="col pr-2">
+                <div class="content-section">
+                    {% for post in post%}
+                    <div class="card" id="card1">
+                            <h5 id="title_home"><img class="rounded-circle article-img" width="50" src="{{post.post_user.profile.profile.url}}" alt="img">&nbsp;{{post.post_user}} <small class="text-muted">&nbsp;{{post.date_created}}</small></h5>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="ml-5"><a href="{% url 'detail' post.id %}">{{post.title}}</a></h4>
+                        <p class="ml-4">{{post.post|truncatewords:"30"}}</p>
+                        <a href="{% url 'detail' post.id %}">Read More</a>
+                    </div>
+                    {% endfor %}
+
+                    <!-- paginator starts here -->
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if post.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ post.previous_page_number }}">previous</a>
+                            {% endif %}
+                    
+                            <span class="current">
+                                Page {{ post.number }} of {{ post.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if post.has_next %}
+                                <a href="?page={{ post.next_page_number }}">next</a>
+                                <a href="?page={{ post.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+    <div class="col-md-4">
+        {% if request.user.is_authenticated %}
+        <div>
+            <div style="float: right;">
+                <div class="py-4">
+                    <div class="py-4">
+                        <p>Your Total Post</p>
+                        <button class="btn btn-success disabled">{{num_post}} Post</button>
+                    </div>
+                    <p class="py-3">View <button class="btn btn-outline-success btn-sm"><a href="{% url 'profile' %}">Profile</a></button> </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

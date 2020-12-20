@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="row py-3">
+    <marquee behavior="scroll" direction="left"><h2 class="alert alert-danger text-center">To be implemented using django socket channel</h2></marquee>
+    <div class="col-md-6">
+        <div>
+            Chat message
+            {% for chat in chat %}
+            <div>
+                
+                {{chat.chat_message}}
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
